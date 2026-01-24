@@ -1,4 +1,4 @@
-const API_BASE_URL = 'http://localhost:3000/api';
+const API_BASE_URL = '/api';
 
 // Helper function to get auth headers
 const getAuthHeaders = () => {
@@ -45,6 +45,11 @@ export const authAPI = {
   }),
 
   getProfile: () => apiRequest('/auth/profile'),
+
+  changePassword: (newPassword) => apiRequest('/auth/change-password', {
+    method: 'POST',
+    body: JSON.stringify({ newPassword })
+  }),
 
   logout: () => {
     // This would typically call an API endpoint to invalidate the token

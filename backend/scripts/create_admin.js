@@ -1,8 +1,13 @@
 import { createConnection } from 'mysql2/promise';
 import { hashPassword } from '../middleware/auth.js';
 import dotenv from 'dotenv';
+import path from 'path';
+import { fileURLToPath } from 'url';
 
-dotenv.config();
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
+dotenv.config({ path: path.resolve(__dirname, '../.env') });
 
 async function createAdminUser() {
   let connection;
@@ -10,29 +15,30 @@ async function createAdminUser() {
   try {
     // Create database connection
     connection = await createConnection({
-      host: process.env.DB_HOST || 'localhost',
-      user: process.env.DB_USER || 'cms_user',
-      password: process.env.DB_PASSWORD || 'CMS_Password123',
-      database: process.env.DB_NAME || 'college_management',
+      host: process.env.DB_HOST,
+      user: process.env.DB_USER,
+      password: process.env.DB_PASSWORD,
+      database: process.env.DB_NAME,
+      port: process.env.DB_PORT
     });
 
     console.log('Connected to database');
 
     // Hash the default admin password
-    const password = 'admin123';
+    const password = process.env.ADMIN_PASSWORD;
     const hashedPassword = await hashPassword(password);
 
     // Insert default admin user
     const insertQuery = `
       INSERT INTO users (username, email, password_hash, role) 
-      VALUES ('admin', 'admin@college.edu', ?, 'admin')
+      VALUES (?, ?, ?, 'admin')
     `;
 
-    const [result] = await connection.execute(insertQuery, [hashedPassword]);
+    const [result] = await connection.execute(insertQuery, [process.env.ADMIN_USERNAME, process.env.ADMIN_EMAIL, hashedPassword]);
 
     console.log(`Admin user created successfully with ID: ${result.insertId}`);
-    console.log('Username: admin');
-    console.log('Password: admin123');
+    console.log(`Username: ${process.env.ADMIN_USERNAME}`);
+    console.log(`Password: ${process.env.ADMIN_PASSWORD}`);
     console.log('Role: admin');
 
   } catch (error) {

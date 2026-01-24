@@ -1,17 +1,6 @@
 -- College Management System Database Schema
 
--- 1. Users table (for admin, staff, and student accounts) - no dependencies
-CREATE TABLE users (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    username VARCHAR(50) UNIQUE NOT NULL,
-    email VARCHAR(100) UNIQUE NOT NULL,
-    password_hash VARCHAR(255) NOT NULL,
-    role ENUM('admin', 'staff', 'student') NOT NULL,
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
-);
-
--- 2. Departments table - no dependencies
+-- Departments table
 CREATE TABLE departments (
     id INT AUTO_INCREMENT PRIMARY KEY,
     name VARCHAR(100) NOT NULL,
@@ -21,7 +10,7 @@ CREATE TABLE departments (
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
--- 3. Courses table - depends on departments
+-- Courses table
 CREATE TABLE courses (
     id INT AUTO_INCREMENT PRIMARY KEY,
     name VARCHAR(100) NOT NULL,
@@ -34,7 +23,7 @@ CREATE TABLE courses (
     FOREIGN KEY (department_id) REFERENCES departments(id)
 );
 
--- 4. Subjects table - depends on courses
+-- Subjects table
 CREATE TABLE subjects (
     id INT AUTO_INCREMENT PRIMARY KEY,
     name VARCHAR(100) NOT NULL,
@@ -48,7 +37,7 @@ CREATE TABLE subjects (
     FOREIGN KEY (course_id) REFERENCES courses(id)
 );
 
--- 5. Classes table - depends on courses
+-- Classes table (for mapping students to courses/semesters)
 CREATE TABLE classes (
     id INT AUTO_INCREMENT PRIMARY KEY,
     course_id INT,
@@ -60,7 +49,19 @@ CREATE TABLE classes (
     FOREIGN KEY (course_id) REFERENCES courses(id)
 );
 
--- 6. Staff table - depends on users and departments
+-- Users table (for admin, staff, and student accounts)
+CREATE TABLE users (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    username VARCHAR(50) UNIQUE NOT NULL,
+    email VARCHAR(100) UNIQUE NOT NULL,
+    password_hash VARCHAR(255) NOT NULL,
+    role ENUM('admin', 'staff', 'student') NOT NULL,
+    password_reset_required TINYINT(1) DEFAULT 0,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+);
+
+-- Staff table
 CREATE TABLE staff (
     id INT AUTO_INCREMENT PRIMARY KEY,
     user_id INT,
@@ -83,7 +84,7 @@ CREATE TABLE staff (
     FOREIGN KEY (department_id) REFERENCES departments(id)
 );
 
--- 7. Students table - depends on users and courses
+-- Students table
 CREATE TABLE students (
     id INT AUTO_INCREMENT PRIMARY KEY,
     user_id INT,
@@ -106,7 +107,7 @@ CREATE TABLE students (
     FOREIGN KEY (course_id) REFERENCES courses(id)
 );
 
--- 8. Class assignments - depends on staff, classes, and subjects
+-- Class assignments (linking staff to classes)
 CREATE TABLE class_assignments (
     id INT AUTO_INCREMENT PRIMARY KEY,
     staff_id INT,
@@ -120,7 +121,7 @@ CREATE TABLE class_assignments (
     FOREIGN KEY (subject_id) REFERENCES subjects(id)
 );
 
--- 9. Attendance table - depends on students, subjects, classes, and staff
+-- Attendance table
 CREATE TABLE attendance (
     id INT AUTO_INCREMENT PRIMARY KEY,
     student_id INT,
@@ -136,7 +137,7 @@ CREATE TABLE attendance (
     FOREIGN KEY (marked_by) REFERENCES staff(id)
 );
 
--- 10. Marks table - depends on students, subjects, classes, and staff
+-- Marks table
 CREATE TABLE marks (
     id INT AUTO_INCREMENT PRIMARY KEY,
     student_id INT,
@@ -157,7 +158,7 @@ CREATE TABLE marks (
     FOREIGN KEY (entered_by) REFERENCES staff(id)
 );
 
--- 11. Notices table - depends on staff and courses
+-- Notices table
 CREATE TABLE notices (
     id INT AUTO_INCREMENT PRIMARY KEY,
     title VARCHAR(200) NOT NULL,
@@ -176,7 +177,7 @@ CREATE TABLE notices (
     FOREIGN KEY (course_id) REFERENCES courses(id)
 );
 
--- 12. Assignments table - depends on subjects, classes, and staff
+-- Assignments table
 CREATE TABLE assignments (
     id INT AUTO_INCREMENT PRIMARY KEY,
     title VARCHAR(200) NOT NULL,
@@ -195,7 +196,7 @@ CREATE TABLE assignments (
     FOREIGN KEY (assigned_by) REFERENCES staff(id)
 );
 
--- 13. Assignment submissions table - depends on assignments, students, and staff
+-- Assignment submissions table
 CREATE TABLE assignment_submissions (
     id INT AUTO_INCREMENT PRIMARY KEY,
     assignment_id INT,
@@ -213,7 +214,7 @@ CREATE TABLE assignment_submissions (
     FOREIGN KEY (graded_by) REFERENCES staff(id)
 );
 
--- 14. Messages table - depends on users
+-- Messages table (for staff-student communication)
 CREATE TABLE messages (
     id INT AUTO_INCREMENT PRIMARY KEY,
     sender_id INT,
@@ -227,7 +228,7 @@ CREATE TABLE messages (
     FOREIGN KEY (receiver_id) REFERENCES users(id)
 );
 
--- 15. Study materials table - depends on subjects, classes, and staff
+-- Study materials table
 CREATE TABLE study_materials (
     id INT AUTO_INCREMENT PRIMARY KEY,
     title VARCHAR(200) NOT NULL,
@@ -245,7 +246,7 @@ CREATE TABLE study_materials (
     FOREIGN KEY (uploaded_by) REFERENCES staff(id)
 );
 
--- 16. Exam halls table - no dependencies
+-- Exam halls table
 CREATE TABLE exam_halls (
     id INT AUTO_INCREMENT PRIMARY KEY,
     hall_number VARCHAR(10) NOT NULL,
@@ -256,7 +257,7 @@ CREATE TABLE exam_halls (
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
--- 17. Exam hall allocations table - depends on students and exam halls
+-- Exam hall allocations table
 CREATE TABLE exam_allocations (
     id INT AUTO_INCREMENT PRIMARY KEY,
     student_id INT,

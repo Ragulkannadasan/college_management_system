@@ -107,7 +107,8 @@ router.post('/', verifyToken, authorizeRoles('admin'), async (req, res) => {
       username,
       email,
       password,
-      role: 'staff'
+      role: 'staff',
+      password_reset_required: true
     });
 
     res.status(201).json({

@@ -36,25 +36,21 @@ const Login = () => {
       if (data.success) {
         login(data.user, data.token);
         
-        if (data.user.password_reset_required) {
-          navigate('/change-password', { replace: true });
+        if (from !== '/') {
+          navigate(from, { replace: true });
         } else {
-          if (from !== '/') {
-            navigate(from, { replace: true });
-          } else {
-            switch(data.user.role) {
-              case 'admin':
-                navigate('/admin/dashboard');
-                break;
-              case 'staff':
-                navigate('/staff/dashboard');
-                break;
-              case 'student':
-                navigate('/student/dashboard');
-                break;
-              default:
-                navigate('/');
-            }
+          switch(data.user.role) {
+            case 'admin':
+              navigate('/admin/dashboard');
+              break;
+            case 'staff':
+              navigate('/staff/dashboard');
+              break;
+            case 'student':
+              navigate('/student/dashboard');
+              break;
+            default:
+              navigate('/');
           }
         }
       } else {

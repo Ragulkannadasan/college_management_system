@@ -11,27 +11,30 @@ const StudentManagement = () => {
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState('');
   const [showAddForm, setShowAddForm] = useState(false);
+  const [successMessage, setSuccessMessage] = useState('');
+  const [formError, setFormError] = useState('');
   const [formData, setFormData] = useState({
     firstName: '',
     lastName: '',
     email: '',
     registrationNumber: '',
     course: '',
-    semester: ''
+    semester: '',
+    username: '',
+    password: ''
   });
   const [errors, setErrors] = useState({});
 
   const columns = [
-    { key: 'registration_number', header: 'Reg No.', width: '15%' },
-    { key: 'first_name', header: 'First Name', width: '15%' },
-    { key: 'last_name', header: 'Last Name', width: '15%' },
-    { key: 'email', header: 'Email', width: '20%' },
-    { key: 'course_name', header: 'Course', width: '15%' },
-    { key: 'semester', header: 'Semester', width: '10%' },
+    { key: 'registration_number', header: 'Reg No.' },
+    { key: 'first_name', header: 'First Name' },
+    { key: 'last_name', header: 'Last Name' },
+    { key: 'email', header: 'Email' },
+    { key: 'course_name', header: 'Course' },
+    { key: 'semester', header: 'Semester' },
     {
       key: 'actions',
       header: 'Actions',
-      width: '10%',
       render: (_, student) => (
         <div className="action-buttons">
           <Button size="small" variant="outline">Edit</Button>
@@ -41,44 +44,11 @@ const StudentManagement = () => {
     }
   ];
 
-  useEffect(() => {
-    fetchStudents();
-  }, []);
-
   const fetchStudents = async () => {
     try {
       setLoading(true);
-      // Mock data for demonstration
-      const mockStudents = [
-        {
-          id: 1,
-          registration_number: 'STU001',
-          first_name: 'John',
-          last_name: 'Doe',
-          email: 'john.doe@student.edu',
-          course_name: 'Computer Science',
-          semester: 4
-        },
-        {
-          id: 2,
-          registration_number: 'STU002',
-          first_name: 'Jane',
-          last_name: 'Smith',
-          email: 'jane.smith@student.edu',
-          course_name: 'Electronics',
-          semester: 3
-        },
-        {
-          id: 3,
-          registration_number: 'STU003',
-          first_name: 'Mike',
-          last_name: 'Johnson',
-          email: 'mike.johnson@student.edu',
-          course_name: 'Mechanical',
-          semester: 5
-        }
-      ];
-      setStudents(mockStudents);
+      const response = await staffAPI.getStudents();
+      setStudents(response.data);
     } catch (error) {
       console.error('Error fetching students:', error);
     } finally {
@@ -86,105 +56,96 @@ const StudentManagement = () => {
     }
   };
 
+  useEffect(() => {
+    fetchStudents();
+  }, []);
+  
   const handleSearch = (e) => {
     setSearchTerm(e.target.value);
   };
 
   const filteredStudents = students.filter(student =>
-    student.first_name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    student.last_name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    student.registration_number.toLowerCase().includes(searchTerm.toLowerCase())
+    (student.first_name && student.first_name.toLowerCase().includes(searchTerm.toLowerCase())) ||
+    (student.last_name && student.last_name.toLowerCase().includes(searchTerm.toLowerCase())) ||
+    (student.registration_number && student.registration_number.toLowerCase().includes(searchTerm.toLowerCase()))
   );
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
-    setFormData(prev => ({
-      ...prev,
-      [name]: value
-    }));
     
-    // Clear error when user starts typing
+    setFormData(prev => {
+      const newFormData = { ...prev, [name]: value };
+      // Pre-fill username with registration number
+      if (name === 'registrationNumber') {
+        newFormData.username = value;
+      }
+      return newFormData;
+    });
+
     if (errors[name]) {
-      setErrors(prev => ({
-        ...prev,
-        [name]: ''
-      }));
+      setErrors(prev => ({ ...prev, [name]: '' }));
     }
   };
 
   const validateForm = () => {
     const newErrors = {};
-    
-    if (!formData.firstName.trim()) {
-      newErrors.firstName = 'First name is required';
-    }
-    
-    if (!formData.lastName.trim()) {
-      newErrors.lastName = 'Last name is required';
-    }
-    
+    if (!formData.firstName.trim()) newErrors.firstName = 'First name is required';
+    if (!formData.lastName.trim()) newErrors.lastName = 'Last name is required';
     if (!formData.email.trim()) {
       newErrors.email = 'Email is required';
     } else if (!/\S+@\S+\.\S+/.test(formData.email)) {
       newErrors.email = 'Email is invalid';
     }
-    
-    if (!formData.registrationNumber.trim()) {
-      newErrors.registrationNumber = 'Registration number is required';
-    }
-    
-    if (!formData.course) {
-      newErrors.course = 'Course is required';
-    }
-    
-    if (!formData.semester) {
-      newErrors.semester = 'Semester is required';
-    }
-    
+    if (!formData.registrationNumber.trim()) newErrors.registrationNumber = 'Registration number is required';
+    if (!formData.course) newErrors.course = 'Course is required';
+    if (!formData.semester) newErrors.semester = 'Semester is required';
+    if (!formData.username.trim()) newErrors.username = 'Username is required';
+    if (!formData.password.trim()) newErrors.password = 'Password is required';
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    
-    if (!validateForm()) {
-      return;
-    }
-    
+    setFormError('');
+    if (!validateForm()) return;
+
     try {
-      // Mock API call
-      console.log('Adding student:', formData);
-      // In real implementation: await staffAPI.createStudent(formData);
+      const response = await staffAPI.createStudent(formData);
+      setStudents(currentStudents => [...currentStudents, response.data]);
       
-      // Reset form
       setFormData({
         firstName: '',
         lastName: '',
         email: '',
         registrationNumber: '',
         course: '',
-        semester: ''
+        semester: '',
+        username: '',
+        password: ''
       });
       setShowAddForm(false);
-      
-      // Refresh student list
-      fetchStudents();
+      setSuccessMessage('Student added successfully!');
+      setTimeout(() => setSuccessMessage(''), 3000);
     } catch (error) {
       console.error('Error adding student:', error);
+      setFormError(error.message || 'An unknown error occurred.');
     }
   };
 
   const handleCancel = () => {
     setFormData({
-      firstName: '',
-      lastName: '',
-      email: '',
-      registrationNumber: '',
-      course: '',
-      semester: ''
+        firstName: '',
+        lastName: '',
+        email: '',
+        registrationNumber: '',
+        course: '',
+        semester: '',
+        username: '',
+        password: ''
     });
     setErrors({});
+    setFormError('');
     setShowAddForm(false);
   };
 
@@ -204,11 +165,14 @@ const StudentManagement = () => {
           className="search-input"
         />
       </div>
+      
+      {successMessage && <div className="success-message">{successMessage}</div>}
 
       {showAddForm && (
         <div className="add-form-overlay">
           <div className="add-form-modal">
             <h3>Add New Student</h3>
+            {formError && <div className="error-message modal-error">{formError}</div>}
             <form onSubmit={handleSubmit}>
               <div className="form-row">
                 <Input
@@ -268,6 +232,27 @@ const StudentManagement = () => {
                   error={errors.semester}
                   required
                 />
+              </div>
+              
+              <div className="form-row">
+                 <Input
+                    label="Username"
+                    name="username"
+                    value={formData.username}
+                    onChange={handleInputChange}
+                    error={errors.username}
+                    required
+                    readOnly 
+                  />
+                  <Input
+                    label="Temporary Password"
+                    name="password"
+                    type="password"
+                    value={formData.password}
+                    onChange={handleInputChange}
+                    error={errors.password}
+                    required
+                  />
               </div>
               
               <div className="form-actions">

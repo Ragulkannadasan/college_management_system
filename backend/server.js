@@ -4,6 +4,7 @@ import dotenv from 'dotenv';
 import { testConnection, closePool } from './config/db.js';
 import authRoutes from './api/auth.js';
 import adminRoutes from './api/admin/index.js';
+import staffRoutes from './api/staff/index.js';
 
 // Load environment variables
 dotenv.config();
@@ -46,6 +47,7 @@ app.get('/', (req, res) => {
 // API routes
 app.use('/api/auth', authRoutes);
 app.use('/api/admin', adminRoutes);
+app.use('/api/staff', staffRoutes);
 
 // 404 handler for undefined routes
 app.use((req, res) => {

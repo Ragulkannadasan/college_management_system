@@ -4,9 +4,9 @@ import Layout from './components/Layout';
 import Home from './components/Home';
 import Login from './components/Login';
 import ProtectedRoute from './components/ProtectedRoute';
+import ChangePassword from './components/ChangePassword';
 import AdminDashboard from './components/admin/Dashboard';
 import AdminStaffManagement from './components/admin/StaffManagement';
-import AdminStudentManagement from './components/admin/StudentManagement';
 import AdminCourseManagement from './components/admin/CourseManagement';
 import StaffDashboard from './components/staff/Dashboard';
 import StaffStudentManagement from './components/staff/StudentManagement';
@@ -15,32 +15,35 @@ import StudentDashboard from './components/student/Dashboard';
 import StudentAttendanceView from './components/student/AttendanceView';
 import NotFound from './components/NotFound';
 import './App.css';
+import './styles/global.css';
 
 function App() {
   return (
     <AuthProvider>
       <Router>
-        <div className="App">
+        <Layout>
           <Routes>
             <Route 
               path="/" 
-              element={
-                <Layout>
-                  <Home />
-                </Layout>
-              } 
+              element={<Home />} 
             />
             <Route 
               path="/login" 
               element={<Login />} 
             />
             <Route 
+              path="/change-password"
+              element={
+                <ProtectedRoute>
+                  <ChangePassword />
+                </ProtectedRoute>
+              }
+            />
+            <Route 
               path="/admin/dashboard" 
               element={
                 <ProtectedRoute allowedRoles={['admin']}>
-                  <Layout>
-                    <AdminDashboard />
-                  </Layout>
+                  <AdminDashboard />
                 </ProtectedRoute>
               } 
             />
@@ -48,19 +51,7 @@ function App() {
               path="/admin/staff" 
               element={
                 <ProtectedRoute allowedRoles={['admin']}>
-                  <Layout>
-                    <AdminStaffManagement />
-                  </Layout>
-                </ProtectedRoute>
-              } 
-            />
-            <Route 
-              path="/admin/students" 
-              element={
-                <ProtectedRoute allowedRoles={['admin']}>
-                  <Layout>
-                    <AdminStudentManagement />
-                  </Layout>
+                  <AdminStaffManagement />
                 </ProtectedRoute>
               } 
             />
@@ -68,9 +59,7 @@ function App() {
               path="/admin/courses" 
               element={
                 <ProtectedRoute allowedRoles={['admin']}>
-                  <Layout>
-                    <AdminCourseManagement />
-                  </Layout>
+                  <AdminCourseManagement />
                 </ProtectedRoute>
               } 
             />
@@ -78,9 +67,7 @@ function App() {
               path="/staff/dashboard" 
               element={
                 <ProtectedRoute allowedRoles={['staff']}>
-                  <Layout>
-                    <StaffDashboard />
-                  </Layout>
+                  <StaffDashboard />
                 </ProtectedRoute>
               } 
             />
@@ -88,9 +75,7 @@ function App() {
               path="/staff/students" 
               element={
                 <ProtectedRoute allowedRoles={['staff']}>
-                  <Layout>
-                    <StaffStudentManagement />
-                  </Layout>
+                  <StaffStudentManagement />
                 </ProtectedRoute>
               } 
             />
@@ -98,9 +83,7 @@ function App() {
               path="/staff/attendance" 
               element={
                 <ProtectedRoute allowedRoles={['staff']}>
-                  <Layout>
-                    <StaffAttendanceManagement />
-                  </Layout>
+                  <StaffAttendanceManagement />
                 </ProtectedRoute>
               } 
             />
@@ -108,9 +91,7 @@ function App() {
               path="/student/dashboard" 
               element={
                 <ProtectedRoute allowedRoles={['student']}>
-                  <Layout>
-                    <StudentDashboard />
-                  </Layout>
+                  <StudentDashboard />
                 </ProtectedRoute>
               } 
             />
@@ -118,52 +99,16 @@ function App() {
               path="/student/attendance" 
               element={
                 <ProtectedRoute allowedRoles={['student']}>
-                  <Layout>
-                    <StudentAttendanceView />
-                  </Layout>
-                </ProtectedRoute>
-              } 
-            />
-            <Route 
-              path="/admin/*" 
-              element={
-                <ProtectedRoute allowedRoles={['admin']}>
-                  <Layout>
-                    <div>Other Admin Content</div>
-                  </Layout>
-                </ProtectedRoute>
-              } 
-            />
-            <Route 
-              path="/staff/*" 
-              element={
-                <ProtectedRoute allowedRoles={['staff']}>
-                  <Layout>
-                    <div>Staff Content</div>
-                  </Layout>
-                </ProtectedRoute>
-              } 
-            />
-            <Route 
-              path="/student/*" 
-              element={
-                <ProtectedRoute allowedRoles={['student']}>
-                  <Layout>
-                    <div>Student Content</div>
-                  </Layout>
+                  <StudentAttendanceView />
                 </ProtectedRoute>
               } 
             />
             <Route 
               path="*" 
-              element={
-                <Layout>
-                  <NotFound />
-                </Layout>
-              } 
+              element={<NotFound />} 
             />
           </Routes>
-        </div>
+        </Layout>
       </Router>
     </AuthProvider>
   );

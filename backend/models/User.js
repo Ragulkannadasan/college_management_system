@@ -8,6 +8,7 @@ class User {
     this.email = userData.email;
     this.password_hash = userData.password_hash;
     this.role = userData.role;
+    this.password_reset_required = userData.password_reset_required;
     this.created_at = userData.created_at;
     this.updated_at = userData.updated_at;
   }
@@ -18,22 +19,24 @@ class User {
       const hashedPassword = await hashPassword(userData.password);
       
       const query = `
-        INSERT INTO users (username, email, password_hash, role) 
-        VALUES (?, ?, ?, ?)
+        INSERT INTO users (username, email, password_hash, role, password_reset_required) 
+        VALUES (?, ?, ?, ?, ?)
       `;
       
       const result = await executeQuery(query, [
         userData.username,
         userData.email,
         hashedPassword,
-        userData.role
+        userData.role,
+        userData.password_reset_required || false
       ]);
       
       return {
         id: result.insertId,
         username: userData.username,
         email: userData.email,
-        role: userData.role
+        role: userData.role,
+        password_reset_required: userData.password_reset_required || false
       };
     } catch (error) {
       console.error('Error creating user:', error);
@@ -44,7 +47,7 @@ class User {
   // Find user by ID
   static async findById(id) {
     try {
-      const query = 'SELECT id, username, email, role, created_at FROM users WHERE id = ?';
+      const query = 'SELECT id, username, email, role, password_reset_required, created_at FROM users WHERE id = ?';
       const results = await executeQuery(query, [id]);
       
       return results.length > 0 ? results[0] : null;
@@ -138,7 +141,7 @@ class User {
     try {
       const hashedPassword = await hashPassword(newPassword);
       
-      const query = 'UPDATE users SET password_hash = ? WHERE id = ?';
+      const query = 'UPDATE users SET password_hash = ?, password_reset_required = 0 WHERE id = ?';
       await executeQuery(query, [hashedPassword, id]);
       
       return true;
