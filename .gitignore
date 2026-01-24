@@ -28,9 +28,7 @@ Desktop.ini
 logs/
 
 # Environment files (root level)
-.env
-.env.local
-.env.*.local
+
 
 # Build artifacts
 build/
