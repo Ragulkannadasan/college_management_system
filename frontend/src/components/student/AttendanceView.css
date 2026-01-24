@@ -1,0 +1,179 @@
+.attendance-view {
+  width: 100%;
+  padding: 1rem;
+}
+
+.page-header {
+  margin-bottom: 2rem;
+  padding-bottom: 1rem;
+  border-bottom: 2px solid #ecf0f1;
+}
+
+.page-header h2 {
+  color: #2c3e50;
+  margin: 0;
+  font-size: 1.8rem;
+}
+
+.overview-section {
+  display: grid;
+  grid-template-columns: 1fr 2fr;
+  gap: 2rem;
+  margin-bottom: 2rem;
+}
+
+.overall-attendance {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.attendance-percentage {
+  text-align: center;
+  padding: 2rem;
+  border-radius: 12px;
+  background: white;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  width: 100%;
+  max-width: 250px;
+}
+
+.attendance-percentage.good {
+  border: 3px solid #27ae60;
+}
+
+.attendance-percentage.poor {
+  border: 3px solid #e74c3c;
+}
+
+.attendance-percentage h2 {
+  font-size: 3rem;
+  margin: 0 0 0.5rem 0;
+  font-weight: 700;
+}
+
+.attendance-percentage.good h2 {
+  color: #27ae60;
+}
+
+.attendance-percentage.poor h2 {
+  color: #e74c3c;
+}
+
+.attendance-percentage p {
+  margin: 0;
+  color: #7f8c8d;
+  font-size: 1.1rem;
+}
+
+.attendance-summary {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1.5rem;
+}
+
+.summary-item {
+  background: white;
+  padding: 1.5rem;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  text-align: center;
+  border-left: 4px solid #3498db;
+}
+
+.summary-item h3 {
+  font-size: 1.8rem;
+  color: #3498db;
+  margin: 0 0 0.5rem 0;
+}
+
+.summary-item p {
+  margin: 0;
+  color: #7f8c8d;
+  font-size: 0.9rem;
+}
+
+.filters {
+  background: white;
+  padding: 1.5rem;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  margin-bottom: 2rem;
+  max-width: 400px;
+}
+
+.filter-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.filter-group label {
+  font-weight: 500;
+  color: #2c3e50;
+}
+
+.attendance-table {
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+}
+
+.status-badge {
+  padding: 0.25rem 0.75rem;
+  border-radius: 20px;
+  font-size: 0.85rem;
+  font-weight: 500;
+}
+
+.status-badge.present {
+  background-color: #d5f4e6;
+  color: #27ae60;
+}
+
+.status-badge.absent {
+  background-color: #fadbd8;
+  color: #e74c3c;
+}
+
+.no-data {
+  text-align: center;
+  padding: 3rem;
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.no-data p {
+  color: #7f8c8d;
+  font-size: 1.1rem;
+  margin: 0;
+}
+
+@media (max-width: 768px) {
+  .overview-section {
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+  }
+  
+  .attendance-summary {
+    grid-template-columns: 1fr 1fr;
+  }
+  
+  .attendance-percentage {
+    max-width: 100%;
+  }
+  
+  .attendance-percentage h2 {
+    font-size: 2.5rem;
+  }
+  
+  .summary-item {
+    padding: 1rem;
+  }
+  
+  .summary-item h3 {
+    font-size: 1.5rem;
+  }
+}

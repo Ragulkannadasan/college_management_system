@@ -1,0 +1,211 @@
+College Management System
+├── frontend/
+│   ├── public/
+│   │   ├── index.html
+│   │   ├── favicon.ico
+│   │   └── manifest.json
+│   ├── src/
+│   │   ├── components/
+│   │   │   ├── common/
+│   │   │   │   ├── Header.jsx
+│   │   │   │   ├── Sidebar.jsx
+│   │   │   │   ├── Footer.jsx
+│   │   │   │   ├── Modal.jsx
+│   │   │   │   ├── Button.jsx
+│   │   │   │   ├── Input.jsx
+│   │   │   │   ├── Table.jsx
+│   │   │   │   └── LoadingSpinner.jsx
+│   │   │   ├── auth/
+│   │   │   │   ├── LoginForm.jsx
+│   │   │   │   └── ForgotPasswordForm.jsx
+│   │   │   ├── dashboard/
+│   │   │   │   ├── AdminDashboard.jsx
+│   │   │   │   ├── StaffDashboard.jsx
+│   │   │   │   └── StudentDashboard.jsx
+│   │   │   ├── admin/
+│   │   │   │   ├── StaffManagement.jsx
+│   │   │   │   ├── StudentManagement.jsx
+│   │   │   │   ├── CourseManagement.jsx
+│   │   │   │   ├── NoticeManagement.jsx
+│   │   │   │   ├── Reports.jsx
+│   │   │   │   └── ExamAllocation.jsx
+│   │   │   ├── staff/
+│   │   │   │   ├── StudentManagement.jsx
+│   │   │   │   ├── AttendanceManagement.jsx
+│   │   │   │   ├── MarksManagement.jsx
+│   │   │   │   ├── AssignmentManagement.jsx
+│   │   │   │   ├── Communication.jsx
+│   │   │   │   └── StudyMaterials.jsx
+│   │   │   └── student/
+│   │   │       ├── Profile.jsx
+│   │   │       ├── AttendanceView.jsx
+│   │   │       ├── MarksView.jsx
+│   │   │       ├── NoticeBoard.jsx
+│   │   │       ├── Assignments.jsx
+│   │   │       ├── Communication.jsx
+│   │   │       ├── StudyMaterials.jsx
+│   │   │       └── ExamHallSearch.jsx
+│   │   ├── pages/
+│   │   │   ├── LandingPage.jsx
+│   │   │   ├── AboutPage.jsx
+│   │   │   ├── ContactPage.jsx
+│   │   │   ├── LoginPage.jsx
+│   │   │   └── DashboardWrapper.jsx
+│   │   ├── services/
+│   │   │   ├── api.js
+│   │   │   ├── authService.js
+│   │   │   ├── adminService.js
+│   │   │   ├── staffService.js
+│   │   │   └── studentService.js
+│   │   ├── utils/
+│   │   │   ├── constants.js
+│   │   │   ├── helpers.js
+│   │   │   ├── validation.js
+│   │   │   └── localStorage.js
+│   │   ├── styles/
+│   │   │   ├── App.css
+│   │   │   ├── globals.css
+│   │   │   ├── components/
+│   │   │   │   ├── header.css
+│   │   │   │   ├── sidebar.css
+│   │   │   │   ├── dashboard.css
+│   │   │   │   └── forms.css
+│   │   │   └── pages/
+│   │   │       ├── landing.css
+│   │   │       ├── login.css
+│   │   │       └── dashboard.css
+│   │   ├── context/
+│   │   │   └── AuthContext.jsx
+│   │   ├── hooks/
+│   │   │   ├── useAuth.js
+│   │   │   ├── useApi.js
+│   │   │   └── useForm.js
+│   │   ├── App.jsx
+│   │   └── main.jsx
+│   ├── package.json
+│   ├── vite.config.js
+│   └── .env.example
+├── backend/
+│   ├── api/
+│   │   ├── auth/
+│   │   │   ├── login.js
+│   │   │   ├── logout.js
+│   │   │   └── profile.js
+│   │   ├── admin/
+│   │   │   ├── staff/
+│   │   │   │   ├── getStaff.js
+│   │   │   │   ├── createStaff.js
+│   │   │   │   ├── updateStaff.js
+│   │   │   │   └── deleteStaff.js
+│   │   │   ├── students/
+│   │   │   │   ├── getStudents.js
+│   │   │   │   ├── createStudent.js
+│   │   │   │   ├── updateStudent.js
+│   │   │   │   └── deleteStudent.js
+│   │   │   ├── courses/
+│   │   │   │   ├── getCourses.js
+│   │   │   │   ├── createCourse.js
+│   │   │   │   ├── updateCourse.js
+│   │   │   │   └── deleteCourse.js
+│   │   │   ├── notices/
+│   │   │   │   ├── getNotices.js
+│   │   │   │   ├── createNotice.js
+│   │   │   │   ├── updateNotice.js
+│   │   │   │   └── deleteNotice.js
+│   │   │   ├── reports/
+│   │   │   │   ├── getAttendanceReports.js
+│   │   │   │   └── getMarksReports.js
+│   │   │   └── exam-allocations/
+│   │   │       ├── getExamHalls.js
+│   │   │       ├── allocateExams.js
+│   │   │       └── searchExamHall.js
+│   │   ├── staff/
+│   │   │   ├── students/
+│   │   │   │   ├── getStudents.js
+│   │   │   │   ├── createStudent.js
+│   │   │   │   ├── updateStudent.js
+│   │   │   │   └── deleteStudent.js
+│   │   │   ├── attendance/
+│   │   │   │   ├── getAttendance.js
+│   │   │   │   ├── markAttendance.js
+│   │   │   │   └── updateAttendance.js
+│   │   │   ├── marks/
+│   │   │   │   ├── getMarks.js
+│   │   │   │   ├── enterMarks.js
+│   │   │   │   └── updateMarks.js
+│   │   │   ├── assignments/
+│   │   │   │   ├── getAssignments.js
+│   │   │   │   ├── createAssignment.js
+│   │   │   │   ├── updateAssignment.js
+│   │   │   │   ├── getSubmissions.js
+│   │   │   │   ├── gradeSubmission.js
+│   │   │   │   └── deleteAssignment.js
+│   │   │   ├── messages/
+│   │   │   │   ├── getMessages.js
+│   │   │   │   ├── sendMessage.js
+│   │   │   │   └── markAsRead.js
+│   │   │   └── study-materials/
+│   │   │       ├── getMaterials.js
+│   │   │       ├── uploadMaterial.js
+│   │   │       ├── updateMaterial.js
+│   │   │       └── deleteMaterial.js
+│   │   ├── student/
+│   │   │   ├── attendance/
+│   │   │   │   └── getAttendance.js
+│   │   │   ├── marks/
+│   │   │   │   └── getMarks.js
+│   │   │   ├── notices/
+│   │   │   │   └── getNotices.js
+│   │   │   ├── assignments/
+│   │   │   │   ├── getAssignments.js
+│   │   │   │   └── submitAssignment.js
+│   │   │   ├── messages/
+│   │   │   │   ├── getMessages.js
+│   │   │   │   └── sendMessage.js
+│   │   │   ├── study-materials/
+│   │   │   │   └── getMaterials.js
+│   │   │   └── exam-hall/
+│   │   │       ├── getExamHall.js
+│   │   │       └── searchExamHall.js
+│   │   └── common/
+│   │       ├── departments.js
+│   │       ├── courses.js
+│   │       ├── subjects.js
+│   │       └── classes.js
+│   ├── lib/
+│   │   ├── db.js
+│   │   ├── auth.js
+│   │   ├── middleware/
+│   │   │   ├── authenticate.js
+│   │   │   ├── authorize.js
+│   │   │   ├── validate.js
+│   │   │   └── errorHandler.js
+│   │   ├── utils/
+│   │   │   ├── logger.js
+│   │   │   ├── helpers.js
+│   │   │   └── validators.js
+│   │   └── models/
+│   │       ├── User.js
+│   │       ├── Student.js
+│   │       ├── Staff.js
+│   │       ├── Course.js
+│   │       ├── Subject.js
+│   │       ├── Attendance.js
+│   │       ├── Marks.js
+│   │       ├── Notice.js
+│   │       ├── Assignment.js
+│   │       ├── Message.js
+│   │       └── StudyMaterial.js
+│   ├── package.json
+│   └── .env.example
+├── database/
+│   ├── schema.sql
+│   ├── seed.sql
+│   └── migrations/
+├── docs/
+│   ├── api_documentation.md
+│   ├── database_design.md
+│   ├── project_report.md
+│   └── deployment_guide.md
+├── README.md
+└── .gitignore

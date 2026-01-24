@@ -1,0 +1,76 @@
+# Project-wide .gitignore
+
+# IDE and editor files
+.vscode/*
+!.vscode/extensions.json
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+.idea/
+*.sw[op]
+*.swo
+*.swn
+.DS_Store
+
+# OS generated files
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+
+# Temporary files
+*.tmp
+*.temp
+*.bak
+*.backup
+
+# Log files
+*.log
+logs/
+
+# Environment files (root level)
+.env
+.env.local
+.env.*.local
+
+# Build artifacts
+build/
+dist/
+
+# Coverage reports
+coverage/
+
+# Dependency directories
+node_modules/
+
+# Package lock files
+package-lock.json
+yarn.lock
+pnpm-lock.yaml
+
+# Editor backup files
+*~
+.*.sw[op]
+
+# Database files
+*.db
+*.sqlite
+*.sqlite3
+
+# Upload directories
+uploads/
+public/uploads/
+
+# Cache directories
+.cache/
+.tmp/
+temp/
+
+# Documentation build output
+docs/_build/
+docs/build/
+
+# IDE specific files
+*.iml
+*.ipr
+*.iws
+.out/
