@@ -72,3 +72,10 @@ docs/build/
 *.ipr
 *.iws
 .out/
+# Environment variables
+.env
+.env.local
+.env.development
+.env.test
+.env.production
+*.env
